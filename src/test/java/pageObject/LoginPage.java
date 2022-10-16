@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,30 +19,24 @@ public class LoginPage extends BasePage {
     public LoginPage() {
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.visibilityOfElementLocated(title));
     }
-
     public void openRegisterPage() {
         driver.findElement(registration).click();
     }
-
     public void setEmail(String email) {
         driver.findElement(emailField).sendKeys(email);
     }
-
     public void setPass(String pass) {
         driver.findElement(passwordField).sendKeys(pass);
     }
-
     public void submit() {
         driver.findElement(submitButton).click();
     }
-
     public void login(String email, String pass) {
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.elementToBeClickable(submitButton));
         setEmail(email);
         setPass(pass);
         submit();
     }
-
     public boolean isTitle(){
         return driver.findElements(title).size()==1;
     }

@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,19 +18,15 @@ public class PersonalAccountPage extends BasePage {
     public PersonalAccountPage() {
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.visibilityOfElementLocated(personalAccountMessage));
     }
-
     public boolean isPersonalAccountMessage() {
         return driver.findElements(personalAccountMessage).size() == 1;
     }
-
     public void openMainPageByConstructorButton() {
         driver.findElement(constructorButton).click();
     }
-
     public void openMainPageByConstructorLogo() {
         driver.findElement(logo).click();
     }
-
     public void logout() {
         driver.findElement(logoutButton).click();
     }

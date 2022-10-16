@@ -1,6 +1,4 @@
 import api.Requests.RegisterUserRequest;
-import api.TestData;
-import api.Utils;
 import io.restassured.http.ContentType;
 import org.junit.After;
 import org.junit.Assert;
@@ -21,8 +19,8 @@ public class RegisterTest {
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.deleteUser(user);
-        driver = Driver.setDriver("chrome");
+        Utils.apiClearTestUserData(user);
+        driver = Driver.setDriver(System.getProperty("browser"));
     }
 
     @After
@@ -42,7 +40,7 @@ public class RegisterTest {
         loginPage.login(user.getEmail(), user.getPassword());
         mainPage = new MainPage();
         Assert.assertTrue(mainPage.isMakeOrderButton());
-        Utils.deleteUser(user);
+        Utils.apiClearTestUserData(user);
     }
 
     @Test

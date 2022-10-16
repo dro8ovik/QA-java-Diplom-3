@@ -1,14 +1,10 @@
 import api.Requests.RegisterUserRequest;
 import api.Responses.RegisteredUserResponse;
-import api.TestData;
-import api.Utils;
 import io.restassured.http.ContentType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.LocalStorage;
 import org.openqa.selenium.html5.WebStorage;
@@ -27,10 +23,10 @@ public class NavigateTest {
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.deleteUser(user);
-        Utils.registerUser(user);
-        registeredUser = Utils.getRegisteredUser(user);
-        driver = Driver.setDriver("chrome");
+        Utils.apiClearTestUserData(user);
+        Utils.apiRegisterUser(user);
+        registeredUser = Utils.apiGetRegisteredUser(user);
+        driver = Driver.setDriver(System.getProperty("browser"));
         driver.get(MainPage.URL);
         WebStorage webStorage = (WebStorage) new Augmenter().augment(driver);
         LocalStorage localStorage = webStorage.getLocalStorage();
@@ -40,7 +36,7 @@ public class NavigateTest {
 
     @After
     public void teardown() {
-        Utils.deleteUser(user);
+        Utils.apiClearTestUserData(user);
         if (driver != null)
             driver.quit();    }
 

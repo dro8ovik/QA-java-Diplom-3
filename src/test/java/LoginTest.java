@@ -1,6 +1,4 @@
 import api.Requests.RegisterUserRequest;
-import api.TestData;
-import api.Utils;
 import io.restassured.http.ContentType;
 import org.junit.After;
 import org.junit.Assert;
@@ -24,14 +22,14 @@ public class LoginTest {
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.deleteUser(user);
-        Utils.registerUser(user);
-        driver = Driver.setDriver("chrome");
+        Utils.apiClearTestUserData(user);
+        Utils.apiRegisterUser(user);
+        driver = Driver.setDriver(System.getProperty("browser"));
     }
 
     @After
     public void teardown(){
-        Utils.deleteUser(user);
+        Utils.apiClearTestUserData(user);
         if (driver != null)
             driver.quit();    }
 

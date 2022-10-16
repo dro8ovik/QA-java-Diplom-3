@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,7 +17,6 @@ public class MainPage extends BasePage {
     private final By bunSection = By.xpath("//span[text()='Булки']");
     private final By selectedSection = By.xpath("//div[contains(@class, 'tab_tab_type_current__2BEPc')]/span");
 
-
     public MainPage() {
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.visibilityOfElementLocated(title));
     }
@@ -24,22 +24,16 @@ public class MainPage extends BasePage {
     public void openPersonalAccount() {
         driver.findElement(personalAccountButton).click();
     }
-
     public void openLoginPage() {
         driver.findElement(entryButton).click();
     }
-
     public boolean isMakeOrderButton() {
         return driver.findElements(makeOrderButton).size() == 1;
     }
-
     public void goToSectionByTypeIngredient(String typeIngredient) {
         driver.findElement(By.xpath("//span[text()='" + typeIngredient + "']")).click();
     }
-
     public String getTextSelectedSection() {
         return driver.findElement(selectedSection).getText();
     }
-
-
 }
