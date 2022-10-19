@@ -1,4 +1,5 @@
 import api.Requests.RegisterUserRequest;
+import api.Responses.RegisteredUserResponse;
 import io.restassured.http.ContentType;
 import org.junit.After;
 import org.junit.Assert;
@@ -17,21 +18,24 @@ public class LoginTest {
     RegisterPage registerPage;
     ForgotPassPage forgotPassPage;
     RegisterUserRequest user;
+    RegisteredUserResponse registeredUser;
 
     @Before
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.apiClearTestUserData(user);
-        Utils.apiRegisterUser(user);
+        Utils.cleanTestUserData(user);
+        registeredUser = Utils.registerUser(user);
         driver = Driver.setDriver(System.getProperty("browser"));
     }
 
     @After
-    public void teardown(){
-        Utils.apiClearTestUserData(user);
+    public void teardown() {
+        if (registeredUser != null)
+            Utils.deleteUser(registeredUser);
         if (driver != null)
-            driver.quit();    }
+            driver.quit();
+    }
 
     @Test
     public void loginFromPersonalAccountButtonSuccessTest() {

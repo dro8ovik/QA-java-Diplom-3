@@ -7,6 +7,12 @@ import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static io.restassured.RestAssured.given;
+
 public class Utils {
 
     public static void setReqSpec(String url, ContentType contentType) {
@@ -16,20 +22,15 @@ public class Utils {
                 .build();
     }
 
-    public static void apiClearTestUserData(RegisterUserRequest user) {
-        apiRegisterUser(user);
-        deleteUser(apiGetRegisteredUser(user));
-    }
-
-
-    public static void apiRegisterUser(RegisterUserRequest user) {
+    public static void cleanTestUserData(RegisterUserRequest user) {
         given()
                 .body(user)
                 .when()
                 .post(TestData.ENDPOINT_REGISTER);
+        deleteUser(getRegisteredUser(user));
     }
 
-    private static void deleteUser(RegisteredUserResponse user) {
+    public static void deleteUser(RegisteredUserResponse user) {
         given()
                 .header("authorization", user.getAccessToken())
                 .body(user)
@@ -37,7 +38,16 @@ public class Utils {
                 .delete(TestData.ENDPOINT_USER);
     }
 
-    public static RegisteredUserResponse apiGetRegisteredUser(LoginUserRequest user) {
+    public static RegisteredUserResponse registerUser(LoginUserRequest user) {
+        return given()
+                .body(user)
+                .when()
+                .post(TestData.ENDPOINT_REGISTER)
+                .then()
+                .extract().as(RegisteredUserResponse.class);
+    }
+
+    public static RegisteredUserResponse getRegisteredUser(LoginUserRequest user) {
         return given()
                 .body(user)
                 .when()
@@ -45,4 +55,6 @@ public class Utils {
                 .then()
                 .extract().as(RegisteredUserResponse.class);
     }
+
+
 }

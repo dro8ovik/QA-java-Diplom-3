@@ -19,14 +19,16 @@ public class RegisterTest {
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.apiClearTestUserData(user);
+        Utils.cleanTestUserData(user);
         driver = Driver.setDriver(System.getProperty("browser"));
     }
 
     @After
-    public void tearDown(){
+    public void teardown() {
         if (driver != null)
-            driver.quit();    }
+            driver.quit();
+        Utils.cleanTestUserData(user);
+    }
 
     @Test
     public void registerSuccessTest() {
@@ -40,14 +42,13 @@ public class RegisterTest {
         loginPage.login(user.getEmail(), user.getPassword());
         mainPage = new MainPage();
         Assert.assertTrue(mainPage.isMakeOrderButton());
-        Utils.apiClearTestUserData(user);
     }
 
     @Test
     public void registerPassLessSixErrorMessageTest() {
         driver.get(RegisterPage.URL);
         registerPage = new RegisterPage();
-        registerPage.register("", "", user.getPassword().substring(0,5));
+        registerPage.register("", "", user.getPassword().substring(0, 5));
         Assert.assertTrue(registerPage.isWrongPassErrorMessage());
     }
 
@@ -55,7 +56,7 @@ public class RegisterTest {
     public void registerPassSixSymbolsTest() {
         driver.get(RegisterPage.URL);
         registerPage = new RegisterPage();
-        registerPage.register("", "", user.getPassword().substring(0,6));
+        registerPage.register("", "", user.getPassword().substring(0, 6));
         Assert.assertFalse(registerPage.isWrongPassErrorMessage());
     }
 }

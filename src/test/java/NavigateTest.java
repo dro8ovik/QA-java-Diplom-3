@@ -23,9 +23,8 @@ public class NavigateTest {
     public void setup() {
         Utils.setReqSpec(TestData.HOST_URL, ContentType.JSON);
         user = new RegisterUserRequest(TestData.USER_EMAIL, TestData.USER_PASS, TestData.USER_NAME);
-        Utils.apiClearTestUserData(user);
-        Utils.apiRegisterUser(user);
-        registeredUser = Utils.apiGetRegisteredUser(user);
+        Utils.cleanTestUserData(user);
+        registeredUser = Utils.registerUser(user);
         driver = Driver.setDriver(System.getProperty("browser"));
         driver.get(MainPage.URL);
         WebStorage webStorage = (WebStorage) new Augmenter().augment(driver);
@@ -36,9 +35,11 @@ public class NavigateTest {
 
     @After
     public void teardown() {
-        Utils.apiClearTestUserData(user);
+        if (registeredUser != null)
+            Utils.deleteUser(registeredUser);
         if (driver != null)
-            driver.quit();    }
+            driver.quit();
+    }
 
     @Test
     public void openPersonalAccountSuccessTest() {

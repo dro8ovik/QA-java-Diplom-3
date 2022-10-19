@@ -37,7 +37,7 @@ public class ConstructorTest {
     }
 
     @After
-    public void tearDown() {
+    public void teardown() {
         if (driver != null)
             driver.quit();
     }
